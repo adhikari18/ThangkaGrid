@@ -13,12 +13,12 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build --workspaces --if-present",
+    "build": "npm run build --workspace=@thangkagrid/core && npm run build --workspace=@thangkagrid/cli && npm run build --workspace=@thangkagrid/visualizer",
     "test": "vitest run",
     "test:watch": "vitest",
     "dev": "npm run dev --workspace=@thangkagrid/visualizer",
     "cli": "node packages/cli/dist/index.js",
-    "typecheck": "npm run typecheck --workspaces --if-present"
+    "typecheck": "npm run typecheck --workspace=@thangkagrid/core && npm run typecheck --workspace=@thangkagrid/cli && npm run typecheck --workspace=@thangkagrid/visualizer"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
