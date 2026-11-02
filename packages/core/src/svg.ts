@@ -218,11 +218,15 @@ export function renderGridToSvg(
   if (visibleLayers.has('landmarks')) {
     lines.push(`  <g id="layer-landmarks">`);
     for (const anchor of Object.values(grid.anchors)) {
+      const coordLabel =
+        Math.abs(anchor.ySor - anchor.sSor) >= 0.01
+          ? `${round(anchor.sSor)}s • y=${round(anchor.ySor)}s`
+          : `${round(anchor.sSor)}s`;
       lines.push(
         `    <circle cx="${round(anchor.spinePoint.x)}" cy="${round(anchor.spinePoint.y)}" r="${round(2.6 * strokeScale)}" fill="${palette.landmarks}" />`
       );
       lines.push(
-        `    <text x="${round(anchor.spinePoint.x + 6)}" y="${round(anchor.spinePoint.y - 3)}" fill="${palette.landmarks}" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8.5">${escapeXml(anchor.id)} (${round(anchor.ySor)}s)</text>`
+        `    <text x="${round(anchor.spinePoint.x + 6)}" y="${round(anchor.spinePoint.y - 3)}" fill="${palette.landmarks}" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8.5">${escapeXml(anchor.id)} (${coordLabel})</text>`
       );
     }
     lines.push(`  </g>`);

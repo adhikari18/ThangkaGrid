@@ -228,6 +228,11 @@ describe('@thangkagrid/core iconometric solver', () => {
     expect(dxf).toContain('FACIAL_GRID');
     expect(dxf).toContain('HALO_ARCS');
     expect(dxf).toContain('EOF');
+
+    // Swaying preset SVG landmarks annotate both canonical arc length (sSor) and foreshortened Y (ySor)
+    const taraSolved = solveDeityGrid(GREEN_TARA_PRESET);
+    const taraSvg = renderGridToSvg(taraSolved, { theme: 'blueprint' });
+    expect(taraSvg).toContain('heart (34s • y=');
   });
 });
 

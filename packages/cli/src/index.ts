@@ -112,13 +112,15 @@ export function runCli(argv: string[]): number {
       console.log(`${def.name.tibetan}  •  ${def.name.english}`);
       console.log(`Sanskrit: ${def.name.sanskrit} | Lineage: ${def.tradition.lineage}`);
       console.log(`Class:    ${def.classification} (${def.unitSystem.canonicalStandingSpanSor} Sor-mo) | Posture: ${def.posture}`);
-      console.log(`Grid:     ${grid.totalHeightSor} Sor-mo (${grid.totalHeightYuka} Yuka / ${grid.totalHeightTala.toFixed(2)} Tāla)`);
+      console.log(
+        `Grid:     ${grid.totalHeightSor} Sor-mo (${grid.totalHeightYuka} Yuka / ${grid.totalHeightTala.toFixed(2)} Tāla)${def.tribhanga.enabled ? ` | Foreshortened Y-Span: ${grid.totalVerticalSpanSor.toFixed(2)} Sor-mo` : ''}`
+      );
       console.log(`====================================================================\n`);
       console.log(`Vertical Segments (Brahmasūtra Intervals):`);
       for (const seg of def.verticalSegments) {
         const anchorBottom = grid.anchors[seg.bottomAnchor];
         console.log(
-          `  [${seg.topAnchor} -> ${seg.bottomAnchor.padEnd(12)}] ${formatSorYuka(seg.sor + seg.yuka / 8).padEnd(14)} | Y=${anchorBottom.ySor.toString().padStart(2)}s | ${seg.label} (${seg.tibetanTerm})`
+          `  [${seg.topAnchor} -> ${seg.bottomAnchor.padEnd(12)}] ${formatSorYuka(seg.sor + seg.yuka / 8).padEnd(14)} | s=${anchorBottom.sSor.toString().padStart(2)}s (Y=${anchorBottom.ySor.toFixed(2).padStart(5)}s) | ${seg.label} (${seg.tibetanTerm})`
         );
       }
       console.log(`\nSolved Primitives: ${grid.primitives.length} vector entities across ${Object.keys(grid.anchors).length} anatomical anchors.`);

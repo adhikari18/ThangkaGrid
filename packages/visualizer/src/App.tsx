@@ -635,14 +635,19 @@ export function App() {
           <div className="panel-card">
             <div className="panel-title">
               <span>Brahmasūtra Vertical Intervals</span>
-              <span className="mono">{solvedGrid.totalHeightSor} Sor</span>
+              <span className="mono">
+                {solvedGrid.totalHeightSor} Sor
+                {tribhanga.enabled
+                  ? ` (Y: ${solvedGrid.totalVerticalSpanSor.toFixed(1)}s)`
+                  : ''}
+              </span>
             </div>
             <table className="segment-table">
               <thead>
                 <tr>
                   <th>Segment / Tibetan</th>
                   <th>Ratio</th>
-                  <th>Y-Pos</th>
+                  <th>Arc / Y-Pos</th>
                 </tr>
               </thead>
               <tbody>
@@ -660,7 +665,11 @@ export function App() {
                         {formatSorYuka(seg.sor + seg.yuka / 8)}
                       </td>
                       <td className="mono" style={{ color: '#f59e0b' }}>
-                        {botAnchor ? `${botAnchor.ySor}s` : '-'}
+                        {botAnchor
+                          ? tribhanga.enabled
+                            ? `${botAnchor.sSor}s (${botAnchor.ySor.toFixed(1)}y)`
+                            : `${botAnchor.ySor}s`
+                          : '-'}
                       </td>
                     </tr>
                   );

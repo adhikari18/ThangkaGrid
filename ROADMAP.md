@@ -6,7 +6,7 @@ This document outlines the multi-milestone engineering roadmap for `ThangkaGrid`
 
 ## Milestone 1: Arc-Length Parameterized Kinematics & Multi-Limb Solver (~22 hrs)
 
-- [ ] **1.1 Gauss-Legendre Arc-Length Parameterized Tribhaṅga Spline (~5 hrs):**
+- [x] **1.1 Gauss-Legendre Arc-Length Parameterized Tribhaṅga Spline (~5 hrs):**
   - Replace vertical $y$-parameterization with 5-point Gauss-Legendre numerical arc-length integration and Newton-Raphson inversion $t(s)$ so that spinal segments (`12 Sor-mo` thorax, `12 Sor-mo` abdomen) preserve exact Euclidean curve length under extreme *Ḍākinī* / *Wrathful* sway.
 - [ ] **1.2 2-Link & 3-Link Planar Inverse Kinematics (IK) for Multi-Armed Deities (~6 hrs):**
   - Implement analytical and FABRIK joint solvers for shoulder → elbow → wrist → mudrā tip chains, supporting 4-armed (*Chenrezig*), 8-armed (*Uṣṇīṣavijayā*, *Mārīcī*), and 1000-armed (*Sahasrabhuja Avalokiteśvara*) radial *Prabhāmaṇḍala* arrays.
