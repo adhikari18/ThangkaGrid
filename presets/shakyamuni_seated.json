@@ -1,0 +1,319 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "shakyamuni_seated",
+  "name": {
+    "english": "Shakyamuni Buddha (Seated Vajrāsana)",
+    "tibetan": "སྟོན་པ་ཤཱཀྱ་ཐུབ་པ།",
+    "wylie": "ston pa shAkya thub pa",
+    "sanskrit": "Śākyamuni Tathāgata",
+    "newari": "Śākyamuni Bhagavān"
+  },
+  "classification": "buddha_125",
+  "tradition": {
+    "lineage": "Menri & New Menri (sMan-thang)",
+    "sourceText": "Vaiḍūrya dKar-po (White Beryl) & Citralakṣaṇa",
+    "authorOrSchool": "Desi Sangye Gyatso (1653–1705) after Menla Dondrub",
+    "notes": "Canonical 125 Sor-mo (10 Tāla + 5 Sor Uṣṇīṣa) supreme enlightened proportion. In seated Vajrāsana posture, the vertical axis from crown flame (nor-bu) to the lotus seat plane spans 58 Sor-mo, resting atop a 12 Sor-mo Padmāsana throne (70 Sor-mo total height)."
+  },
+  "posture": "vajrasana",
+  "unitSystem": {
+    "baseUnit": "sor",
+    "yukaPerSor": 8,
+    "sorPerTala": 12,
+    "canonicalStandingSpanSor": 125,
+    "seatedGridHeightSor": 70
+  },
+  "verticalSegments": [
+    {
+      "id": "ushnisha_jewel",
+      "topAnchor": "crown_top",
+      "bottomAnchor": "ushnisha_top",
+      "label": "Crown Flame Jewel (Cūḍāmaṇi)",
+      "tibetanTerm": "gtsug gi nor bu",
+      "sor": 2,
+      "yuka": 0,
+      "zone": "crown"
+    },
+    {
+      "id": "ushnisha_dome",
+      "topAnchor": "ushnisha_top",
+      "bottomAnchor": "hairline",
+      "label": "Cranial Protuberance (Uṣṇīṣa)",
+      "tibetanTerm": "dbu gtsug tor",
+      "sor": 4,
+      "yuka": 0,
+      "zone": "crown"
+    },
+    {
+      "id": "hairline_to_urna",
+      "topAnchor": "hairline",
+      "bottomAnchor": "urna",
+      "label": "Forehead (Hairline to Ūrṇā Brow)",
+      "tibetanTerm": "skra mtshams nas mdzod spu",
+      "sor": 4,
+      "yuka": 0,
+      "zone": "face"
+    },
+    {
+      "id": "urna_to_nose_base",
+      "topAnchor": "urna",
+      "bottomAnchor": "nose_base",
+      "label": "Mid-Face (Ūrṇā Brow to Nose Base)",
+      "tibetanTerm": "mdzod spu nas sna rtse",
+      "sor": 4,
+      "yuka": 0,
+      "zone": "face"
+    },
+    {
+      "id": "nose_base_to_chin",
+      "topAnchor": "nose_base",
+      "bottomAnchor": "chin",
+      "label": "Lower Face (Nose Base to Chin)",
+      "tibetanTerm": "sna rtse nas ko sko",
+      "sor": 4,
+      "yuka": 0,
+      "zone": "face"
+    },
+    {
+      "id": "neck",
+      "topAnchor": "chin",
+      "bottomAnchor": "neck_base",
+      "label": "Conch-Striated Neck (Grīvā)",
+      "tibetanTerm": "mgrin pa",
+      "sor": 4,
+      "yuka": 0,
+      "zone": "neck"
+    },
+    {
+      "id": "neck_to_heart",
+      "topAnchor": "neck_base",
+      "bottomAnchor": "heart",
+      "label": "Upper Chest (Sternal Notch to Heart Cakra)",
+      "tibetanTerm": "mgrin pa nas thugs ka",
+      "sor": 12,
+      "yuka": 0,
+      "zone": "torso"
+    },
+    {
+      "id": "heart_to_navel",
+      "topAnchor": "heart",
+      "bottomAnchor": "navel",
+      "label": "Abdomen (Heart Cakra to Navel)",
+      "tibetanTerm": "thugs ka nas lte ba",
+      "sor": 12,
+      "yuka": 0,
+      "zone": "torso"
+    },
+    {
+      "id": "navel_to_seat",
+      "topAnchor": "navel",
+      "bottomAnchor": "throne_top",
+      "label": "Pelvis & Locked Vajra Legs (Navel to Seat Plane)",
+      "tibetanTerm": "lte ba nas gdan steng",
+      "sor": 12,
+      "yuka": 0,
+      "zone": "pelvis"
+    },
+    {
+      "id": "lotus_throne",
+      "topAnchor": "throne_top",
+      "bottomAnchor": "throne_base",
+      "label": "Moon Disc & Double-Petal Lotus Throne (Padmāsana)",
+      "tibetanTerm": "padma dang zla gdan",
+      "sor": 12,
+      "yuka": 0,
+      "zone": "throne"
+    }
+  ],
+  "horizontalWidths": [
+    {
+      "id": "ushnisha_width",
+      "anchor": "ushnisha_top",
+      "label": "Uṣṇīṣa Dome Top Width",
+      "halfWidthSor": 3,
+      "yuka": 0,
+      "category": "head"
+    },
+    {
+      "id": "cranial_hairline_width",
+      "anchor": "hairline",
+      "label": "Cranial Vault at Hairline",
+      "halfWidthSor": 6,
+      "yuka": 0,
+      "category": "head"
+    },
+    {
+      "id": "face_brow_width",
+      "anchor": "urna",
+      "label": "Facial Half-Width at Ūrṇā (Excluding Ears)",
+      "halfWidthSor": 6,
+      "yuka": 0,
+      "category": "head"
+    },
+    {
+      "id": "ear_outer_span",
+      "anchor": "urna",
+      "label": "Outer Ear Helix Span",
+      "halfWidthSor": 8,
+      "yuka": 0,
+      "category": "head"
+    },
+    {
+      "id": "jaw_cheek_width",
+      "anchor": "nose_base",
+      "label": "Cheek & Jaw Taper at Nose Base",
+      "halfWidthSor": 5,
+      "yuka": 2,
+      "category": "head"
+    },
+    {
+      "id": "chin_width",
+      "anchor": "chin",
+      "label": "Chin Rounding Width",
+      "halfWidthSor": 3,
+      "yuka": 0,
+      "category": "head"
+    },
+    {
+      "id": "neck_width",
+      "anchor": "neck_base",
+      "label": "Neck Cylinder Half-Width",
+      "halfWidthSor": 4,
+      "yuka": 0,
+      "category": "torso"
+    },
+    {
+      "id": "shoulder_span",
+      "anchor": "neck_base",
+      "label": "Outer Shoulder Deltoid Span (dpung-mgo)",
+      "halfWidthSor": 16,
+      "yuka": 0,
+      "category": "torso"
+    },
+    {
+      "id": "chest_axilla_width",
+      "anchor": "heart",
+      "label": "Torso Breadth at Heart Cakra (mchan-khung)",
+      "halfWidthSor": 12,
+      "yuka": 0,
+      "category": "torso"
+    },
+    {
+      "id": "elbow_outer_span",
+      "anchor": "heart",
+      "label": "Outer Elbow Span",
+      "halfWidthSor": 20,
+      "yuka": 0,
+      "category": "limbs"
+    },
+    {
+      "id": "waist_navel_width",
+      "anchor": "navel",
+      "label": "Narrowed Lion-Waist at Navel (rked-pa)",
+      "halfWidthSor": 7,
+      "yuka": 4,
+      "category": "torso"
+    },
+    {
+      "id": "vajrasana_knee_span",
+      "anchor": "throne_top",
+      "label": "Crossed Knee Span in Vajrāsana (pus-mo)",
+      "halfWidthSor": 26,
+      "yuka": 0,
+      "category": "limbs"
+    },
+    {
+      "id": "throne_base_width",
+      "anchor": "throne_base",
+      "label": "Lotus Throne Base Span",
+      "halfWidthSor": 24,
+      "yuka": 0,
+      "category": "throne"
+    }
+  ],
+  "facialGrid": {
+    "hairlineAnchor": "hairline",
+    "urnaAnchor": "urna",
+    "noseBaseAnchor": "nose_base",
+    "chinAnchor": "chin",
+    "faceHalfWidthSor": 6,
+    "earWidthSor": 2,
+    "earlobeBelowChinSor": 1.5,
+    "eyeLineBelowUrnaSor": 2,
+    "eyeInnerHalfSpanSor": 1.25,
+    "eyeLengthSor": 3.5,
+    "eyeHeightYuka": 4,
+    "noseHalfWidthSor": 1.5,
+    "mouthBelowNoseBaseSor": 1.25,
+    "mouthHalfWidthSor": 2.25,
+    "urnaRadiusYuka": 2.5
+  },
+  "tribhanga": {
+    "enabled": false,
+    "headTiltDeg": 0,
+    "neckDeflectionSor": 0,
+    "heartDeflectionSor": 0,
+    "waistDeflectionSor": 0,
+    "hipDeflectionSor": 0
+  },
+  "halos": {
+    "sirascakra": {
+      "centerAnchor": "urna",
+      "verticalOffsetSor": 1.0,
+      "radiusSor": 14.5,
+      "innerRingRatio": 0.88,
+      "rayCount": 24
+    },
+    "prabhamandala": {
+      "centerAnchor": "heart",
+      "verticalOffsetSor": 4.0,
+      "radiusXSor": 30.0,
+      "radiusYSor": 33.0,
+      "innerRingRatio": 0.91,
+      "rayCount": 48
+    }
+  },
+  "karnasutra": [
+    {
+      "id": "face_diagonal_x",
+      "label": "Facial Tāla Karṇasūtra (Hairline Temple to Chin/Jaw)",
+      "fromAnchor": "hairline",
+      "fromOffsetSor": 6,
+      "toAnchor": "chin",
+      "toOffsetSor": -6
+    },
+    {
+      "id": "shoulder_to_knee_diagonal",
+      "label": "Torso-to-Knee Karṇasūtra (Shoulder Tip to Opposite Vajrāsana Knee)",
+      "fromAnchor": "neck_base",
+      "fromOffsetSor": 16,
+      "toAnchor": "throne_top",
+      "toOffsetSor": -26
+    },
+    {
+      "id": "crown_to_elbow_diagonal",
+      "label": "Uṣṇīṣa-to-Elbow Construction Triangle",
+      "fromAnchor": "crown_top",
+      "fromOffsetSor": 0,
+      "toAnchor": "heart",
+      "toOffsetSor": 20
+    },
+    {
+      "id": "shoulder_to_navel_v",
+      "label": "Thoracic V-Axis (Shoulder Tips to Navel Center)",
+      "fromAnchor": "neck_base",
+      "fromOffsetSor": 16,
+      "toAnchor": "navel",
+      "toOffsetSor": 0
+    }
+  ],
+  "lotusThrone": {
+    "topAnchor": "throne_top",
+    "baseAnchor": "throne_base",
+    "topHalfWidthSor": 28,
+    "baseHalfWidthSor": 24,
+    "moonDiscHeightSor": 2.5,
+    "upperPetalCount": 9,
+    "lowerPetalCount": 7
+  }
+}

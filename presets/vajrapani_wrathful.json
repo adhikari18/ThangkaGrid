@@ -1,0 +1,312 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "vajrapani_wrathful",
+  "name": {
+    "english": "Wrathful Vajrapāṇi (96-Sor Dharmapāla)",
+    "tibetan": "ཕྱག་ན་རྡོ་རྗེ་གཏུམ་པོ།",
+    "wylie": "phyag na rdo rje gtum po",
+    "sanskrit": "Caṇḍa-Mahāroṣaṇa Vajrapāṇi",
+    "newari": "Cakrasaṃvara / Bhairava Krodha Māna"
+  },
+  "classification": "wrathful_96",
+  "tradition": {
+    "lineage": "Menri Wrathful Proportion (Khro-bo'i Thig-tshad)",
+    "sourceText": "Vaiḍūrya dKar-po & Kālacakra Tantra",
+    "authorOrSchool": "Desi Sangye Gyatso",
+    "notes": "Canonical 96 Sor-mo (8 Tāla / Aṣṭatāla) compact wrathful protector proportion. Features a square 12-sor face, flaming upward hair (dbu-skra gyen-du brdzes-pa), 2-sor compact bull neck, broad chest, rounded pot-belly (gsus-khyim), and dynamic Pratyālīḍha lunging stance."
+  },
+  "posture": "pratyalidha",
+  "unitSystem": {
+    "baseUnit": "sor",
+    "yukaPerSor": 8,
+    "sorPerTala": 12,
+    "canonicalStandingSpanSor": 96,
+    "seatedGridHeightSor": 66
+  },
+  "verticalSegments": [
+    {
+      "id": "vajra_flame_top",
+      "topAnchor": "crown_top",
+      "bottomAnchor": "ushnisha_top",
+      "label": "Half-Vajra Finial & Flaming Hair Crest",
+      "tibetanTerm": "rdo rje phyed pa'i tog",
+      "sor": 4,
+      "yuka": 0,
+      "zone": "crown"
+    },
+    {
+      "id": "skull_crown",
+      "topAnchor": "ushnisha_top",
+      "bottomAnchor": "hairline",
+      "label": "Five-Skull Crown (Kapālamālā) & Bristling Hair",
+      "tibetanTerm": "thod skam lnga'i dbu rgyan",
+      "sor": 4,
+      "yuka": 0,
+      "zone": "crown"
+    },
+    {
+      "id": "hairline_to_urna",
+      "topAnchor": "hairline",
+      "bottomAnchor": "urna",
+      "label": "Furrowed Wrathful Brow (Hairline to Vertical Third Eye)",
+      "tibetanTerm": "skra mtshams nas ye shes spyan",
+      "sor": 4,
+      "yuka": 0,
+      "zone": "face"
+    },
+    {
+      "id": "urna_to_nose_base",
+      "topAnchor": "urna",
+      "bottomAnchor": "nose_base",
+      "label": "Flared Bridge & Nostrils (Third Eye to Nose Base)",
+      "tibetanTerm": "spyan nas sna rtse",
+      "sor": 4,
+      "yuka": 0,
+      "zone": "face"
+    },
+    {
+      "id": "nose_base_to_chin",
+      "topAnchor": "nose_base",
+      "bottomAnchor": "chin",
+      "label": "Fanged Roaring Jaw & Flame Beard",
+      "tibetanTerm": "sna rtse nas ag tshom",
+      "sor": 4,
+      "yuka": 0,
+      "zone": "face"
+    },
+    {
+      "id": "neck",
+      "topAnchor": "chin",
+      "bottomAnchor": "neck_base",
+      "label": "Compact Wrathful Neck",
+      "tibetanTerm": "mgrin pa thung ba",
+      "sor": 2,
+      "yuka": 0,
+      "zone": "neck"
+    },
+    {
+      "id": "neck_to_heart",
+      "topAnchor": "neck_base",
+      "bottomAnchor": "heart",
+      "label": "Massive Pectoral Chest (Neck to Heart Cakra)",
+      "tibetanTerm": "mgrin pa nas thugs ka",
+      "sor": 10,
+      "yuka": 0,
+      "zone": "torso"
+    },
+    {
+      "id": "heart_to_navel",
+      "topAnchor": "heart",
+      "bottomAnchor": "navel",
+      "label": "Distended Wrathful Belly (Heart to Navel)",
+      "tibetanTerm": "thugs ka nas gsus khyim lte ba",
+      "sor": 10,
+      "yuka": 0,
+      "zone": "torso"
+    },
+    {
+      "id": "navel_to_seat",
+      "topAnchor": "navel",
+      "bottomAnchor": "throne_top",
+      "label": "Pratyālīḍha Lunging Legs (Navel to Sun Disc)",
+      "tibetanTerm": "g.yon brkyang zhabs",
+      "sor": 14,
+      "yuka": 0,
+      "zone": "legs"
+    },
+    {
+      "id": "lotus_throne",
+      "topAnchor": "throne_top",
+      "bottomAnchor": "throne_base",
+      "label": "Sun Disc & Crushed Lotus Pedestal",
+      "tibetanTerm": "nyi gdan dang padma",
+      "sor": 10,
+      "yuka": 0,
+      "zone": "throne"
+    }
+  ],
+  "horizontalWidths": [
+    {
+      "id": "flaming_hair_width",
+      "anchor": "ushnisha_top",
+      "label": "Bristling Orange Hair Mane Width",
+      "halfWidthSor": 8,
+      "yuka": 0,
+      "category": "head"
+    },
+    {
+      "id": "skull_crown_width",
+      "anchor": "hairline",
+      "label": "Five-Skull Diadem Span",
+      "halfWidthSor": 7,
+      "yuka": 0,
+      "category": "head"
+    },
+    {
+      "id": "face_brow_width",
+      "anchor": "urna",
+      "label": "Square Wrathful Face Half-Width",
+      "halfWidthSor": 6,
+      "yuka": 4,
+      "category": "head"
+    },
+    {
+      "id": "ear_outer_span",
+      "anchor": "urna",
+      "label": "Serpent-Ornamented Ear Span",
+      "halfWidthSor": 9,
+      "yuka": 0,
+      "category": "head"
+    },
+    {
+      "id": "jaw_cheek_width",
+      "anchor": "nose_base",
+      "label": "Broad Squared Jaw Width",
+      "halfWidthSor": 6,
+      "yuka": 0,
+      "category": "head"
+    },
+    {
+      "id": "chin_beard_width",
+      "anchor": "chin",
+      "label": "Flame-Beard Chin Width",
+      "halfWidthSor": 4,
+      "yuka": 4,
+      "category": "head"
+    },
+    {
+      "id": "neck_width",
+      "anchor": "neck_base",
+      "label": "Thick Muscular Neck Width",
+      "halfWidthSor": 5,
+      "yuka": 0,
+      "category": "torso"
+    },
+    {
+      "id": "shoulder_span",
+      "anchor": "neck_base",
+      "label": "Broad Deltoid & Scarf Span",
+      "halfWidthSor": 18,
+      "yuka": 0,
+      "category": "torso"
+    },
+    {
+      "id": "chest_width",
+      "anchor": "heart",
+      "label": "Barrel Chest Half-Width",
+      "halfWidthSor": 14,
+      "yuka": 0,
+      "category": "torso"
+    },
+    {
+      "id": "wielding_arm_span",
+      "anchor": "heart",
+      "label": "Raised Vajra & Tarjanī Pāśa Arm Span",
+      "halfWidthSor": 24,
+      "yuka": 0,
+      "category": "limbs"
+    },
+    {
+      "id": "belly_navel_width",
+      "anchor": "navel",
+      "label": "Pot-Belly Half-Width at Navel",
+      "halfWidthSor": 12,
+      "yuka": 0,
+      "category": "torso"
+    },
+    {
+      "id": "pratyalidha_stance_span",
+      "anchor": "throne_top",
+      "label": "Wide Lunging Foot Span on Sun Disc",
+      "halfWidthSor": 28,
+      "yuka": 0,
+      "asymmetricRightOffsetSor": 4.0,
+      "category": "limbs"
+    },
+    {
+      "id": "throne_base_width",
+      "anchor": "throne_base",
+      "label": "Lotus Pedestal Base Span",
+      "halfWidthSor": 25,
+      "yuka": 0,
+      "category": "throne"
+    }
+  ],
+  "facialGrid": {
+    "hairlineAnchor": "hairline",
+    "urnaAnchor": "urna",
+    "noseBaseAnchor": "nose_base",
+    "chinAnchor": "chin",
+    "faceHalfWidthSor": 6.5,
+    "earWidthSor": 2.5,
+    "earlobeBelowChinSor": 1.0,
+    "eyeLineBelowUrnaSor": 2.0,
+    "eyeInnerHalfSpanSor": 1.25,
+    "eyeLengthSor": 3.5,
+    "eyeHeightYuka": 11,
+    "noseHalfWidthSor": 2.0,
+    "mouthBelowNoseBaseSor": 1.5,
+    "mouthHalfWidthSor": 3.25,
+    "urnaRadiusYuka": 3.5
+  },
+  "tribhanga": {
+    "enabled": true,
+    "headTiltDeg": -6.0,
+    "neckDeflectionSor": -2.5,
+    "heartDeflectionSor": -4.0,
+    "waistDeflectionSor": 2.0,
+    "hipDeflectionSor": 4.5
+  },
+  "halos": {
+    "sirascakra": {
+      "centerAnchor": "urna",
+      "verticalOffsetSor": 0.0,
+      "radiusSor": 15.0,
+      "innerRingRatio": 0.85,
+      "rayCount": 32
+    },
+    "prabhamandala": {
+      "centerAnchor": "heart",
+      "verticalOffsetSor": 2.0,
+      "radiusXSor": 32.0,
+      "radiusYSor": 34.0,
+      "innerRingRatio": 0.88,
+      "rayCount": 64
+    }
+  },
+  "karnasutra": [
+    {
+      "id": "face_diagonal_x",
+      "label": "Wrathful Square Face Karṇasūtra",
+      "fromAnchor": "hairline",
+      "fromOffsetSor": 6.5,
+      "toAnchor": "chin",
+      "toOffsetSor": -6.5
+    },
+    {
+      "id": "shoulder_to_stance_diagonal",
+      "label": "Pratyālīḍha Lunge Karṇasūtra",
+      "fromAnchor": "neck_base",
+      "fromOffsetSor": 18,
+      "toAnchor": "throne_top",
+      "toOffsetSor": -28
+    },
+    {
+      "id": "crown_to_arm_diagonal",
+      "label": "Flaming Crest to Wielded Vajra Triangle",
+      "fromAnchor": "crown_top",
+      "fromOffsetSor": 0,
+      "toAnchor": "heart",
+      "toOffsetSor": 24
+    }
+  ],
+  "lotusThrone": {
+    "topAnchor": "throne_top",
+    "baseAnchor": "throne_base",
+    "topHalfWidthSor": 30,
+    "baseHalfWidthSor": 25,
+    "moonDiscHeightSor": 2.5,
+    "upperPetalCount": 9,
+    "lowerPetalCount": 7
+  }
+}

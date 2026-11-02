@@ -1,0 +1,434 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://thangkagrid.org/schemas/deity-definition.schema.json",
+  "title": "ThangkaGrid Deity Iconometric Definition",
+  "description": "Declarative iconometric ratio contract for Tibetan Thangka (Thigse / Thig-tshad) and Newari Paubha sacred geometric grids, expressed in scale-invariant Sor-mo (finger-width) and Yuka (barley-grain) units.",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "name",
+    "classification",
+    "tradition",
+    "posture",
+    "unitSystem",
+    "verticalSegments",
+    "horizontalWidths",
+    "facialGrid",
+    "tribhanga",
+    "halos",
+    "karnasutra",
+    "lotusThrone"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0",
+      "description": "Semantic version of the ThangkaGrid deity definition schema."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$",
+      "description": "Machine-readable slug identifier for the deity preset."
+    },
+    "name": {
+      "type": "object",
+      "required": ["english", "tibetan", "wylie", "sanskrit"],
+      "additionalProperties": false,
+      "properties": {
+        "english": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Common English name of the deity."
+        },
+        "tibetan": {
+          "type": "string",
+          "description": "Tibetan Uchen script name."
+        },
+        "wylie": {
+          "type": "string",
+          "description": "Extended Wylie transliteration of the Tibetan name."
+        },
+        "sanskrit": {
+          "type": "string",
+          "description": "IAST Sanskrit name of the deity."
+        },
+        "newari": {
+          "type": "string",
+          "description": "Classical Nepal Bhasa / Newari name used in Paubha manuals."
+        }
+      }
+    },
+    "classification": {
+      "type": "string",
+      "enum": ["buddha_125", "peaceful_120", "wrathful_96", "custom"],
+      "description": "Canonical proportional class: 125-sor Enlightened Buddha (Tathagata), 120-sor Peaceful Bodhisattva/Goddess, or 96-sor Wrathful Dharmapala/Heruka."
+    },
+    "tradition": {
+      "type": "object",
+      "required": ["lineage", "sourceText", "authorOrSchool"],
+      "additionalProperties": false,
+      "properties": {
+        "lineage": {
+          "type": "string",
+          "description": "Artistic tradition (e.g., Menri, Karma Gadri, Newari Paubha, Khyenri)."
+        },
+        "sourceText": {
+          "type": "string",
+          "description": "Primary canonical treatise (e.g., Vaidurya dKar-po, Citralaksana, Kalacakra Tantra)."
+        },
+        "authorOrSchool": {
+          "type": "string",
+          "description": "Historical codifier or school."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Iconometric commentary on how total Sor-mo span maps to seated vs. standing planes."
+        }
+      }
+    },
+    "posture": {
+      "type": "string",
+      "enum": ["vajrasana", "lalitasana", "pratyalidha", "samabhanga", "tribhanga_standing"],
+      "description": "Canonical physical posture (asana/sthana)."
+    },
+    "unitSystem": {
+      "type": "object",
+      "required": ["baseUnit", "yukaPerSor", "sorPerTala", "canonicalStandingSpanSor", "seatedGridHeightSor"],
+      "additionalProperties": false,
+      "properties": {
+        "baseUnit": {
+          "type": "string",
+          "const": "sor",
+          "description": "Fundamental unit: Sor-mo (Tib. sor-mo, Skt. angula / finger-width)."
+        },
+        "yukaPerSor": {
+          "type": "integer",
+          "const": 8,
+          "description": "Sub-units per Sor-mo: 1 sor = 8 yuka (Tib. nas / barley-grains)."
+        },
+        "sorPerTala": {
+          "type": "integer",
+          "const": 12,
+          "description": "Sor-mo per Tala: 1 tala (Tib. mtho / face-length span) = 12 sor."
+        },
+        "canonicalStandingSpanSor": {
+          "type": "number",
+          "minimum": 24,
+          "maximum": 200,
+          "description": "Full canonical proportional category in Sor-mo (125 for Buddhas, 120 for Bodhisattvas, 96 for Wrathful)."
+        },
+        "seatedGridHeightSor": {
+          "type": "number",
+          "minimum": 12,
+          "maximum": 200,
+          "description": "Total vertical height of the active seated/lunging figure + lotus throne in Sor-mo."
+        }
+      }
+    },
+    "verticalSegments": {
+      "type": "array",
+      "minItems": 6,
+      "description": "Ordered vertical intervals along the central Brahmasutra from top crown jewel down to the lotus throne base.",
+      "items": {
+        "type": "object",
+        "required": ["id", "topAnchor", "bottomAnchor", "label", "tibetanTerm", "sor", "yuka", "zone"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "topAnchor": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$",
+            "description": "Landmark ID at the top of this vertical segment."
+          },
+          "bottomAnchor": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$",
+            "description": "Landmark ID at the bottom of this vertical segment."
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable anatomical interval name."
+          },
+          "tibetanTerm": {
+            "type": "string",
+            "description": "Traditional Tibetan (Wylie) / Sanskrit iconometric term."
+          },
+          "sor": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Whole Sor-mo (finger-width) measure for this interval."
+          },
+          "yuka": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 7.99,
+            "description": "Additional Yuka (barley-grain, 1/8th sor) measure."
+          },
+          "zone": {
+            "type": "string",
+            "enum": ["crown", "face", "neck", "torso", "pelvis", "legs", "throne"]
+          }
+        }
+      }
+    },
+    "horizontalWidths": {
+      "type": "array",
+      "minItems": 6,
+      "description": "Bilateral horizontal half-widths measured perpendicular to the Brahmasutra at named vertical anchors.",
+      "items": {
+        "type": "object",
+        "required": ["id", "anchor", "label", "halfWidthSor", "yuka", "category"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "anchor": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$",
+            "description": "References a vertical anchor landmark ID."
+          },
+          "label": {
+            "type": "string"
+          },
+          "halfWidthSor": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Distance from the central Brahmasutra to either left or right landmark in whole Sor-mo."
+          },
+          "yuka": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 7.99,
+            "description": "Additional Yuka (1/8th sor) added to halfWidthSor."
+          },
+          "asymmetricRightOffsetSor": {
+            "type": "number",
+            "default": 0,
+            "description": "Optional extension on the viewer's right (deity's left/right leg extension such as Lalitasana)."
+          },
+          "category": {
+            "type": "string",
+            "enum": ["head", "torso", "limbs", "throne"]
+          }
+        }
+      }
+    },
+    "facialGrid": {
+      "type": "object",
+      "required": [
+        "hairlineAnchor",
+        "urnaAnchor",
+        "noseBaseAnchor",
+        "chinAnchor",
+        "faceHalfWidthSor",
+        "earWidthSor",
+        "earlobeBelowChinSor",
+        "eyeLineBelowUrnaSor",
+        "eyeInnerHalfSpanSor",
+        "eyeLengthSor",
+        "eyeHeightYuka",
+        "noseHalfWidthSor",
+        "mouthBelowNoseBaseSor",
+        "mouthHalfWidthSor",
+        "urnaRadiusYuka"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "hairlineAnchor": { "type": "string" },
+        "urnaAnchor": { "type": "string" },
+        "noseBaseAnchor": { "type": "string" },
+        "chinAnchor": { "type": "string" },
+        "faceHalfWidthSor": {
+          "type": "number",
+          "minimum": 1,
+          "description": "Half-width of the face from central Brahmasutra to inner ear line (canonically 6 sor)."
+        },
+        "earWidthSor": {
+          "type": "number",
+          "minimum": 0.5,
+          "description": "Horizontal width of each ear helix beyond the facial boundary (canonically 2 sor)."
+        },
+        "earlobeBelowChinSor": {
+          "type": "number",
+          "minimum": 0,
+          "description": "How far the elongated earlobe (pendulous wisdom lobes) descends relative to the chin/jaw."
+        },
+        "eyeLineBelowUrnaSor": {
+          "type": "number",
+          "minimum": 0.5,
+          "description": "Vertical distance from Urna (brow/third-eye) down to the horizontal pupil axis."
+        },
+        "eyeInnerHalfSpanSor": {
+          "type": "number",
+          "minimum": 0.25,
+          "description": "Distance from central Brahmasutra to the inner tear duct (canthus) of each eye."
+        },
+        "eyeLengthSor": {
+          "type": "number",
+          "minimum": 1,
+          "description": "Length of the bow-shaped / lotus-petal eye in Sor-mo."
+        },
+        "eyeHeightYuka": {
+          "type": "number",
+          "minimum": 1,
+          "description": "Vertical opening of the eye in Yuka (1/8th sor; peaceful Buddha = 4 yuka, Tara = 5 yuka, Wrathful = 12 yuka)."
+        },
+        "noseHalfWidthSor": {
+          "type": "number",
+          "minimum": 0.5,
+          "description": "Half-width of the nostrils at the nose base anchor."
+        },
+        "mouthBelowNoseBaseSor": {
+          "type": "number",
+          "minimum": 0.25,
+          "description": "Distance from the nose base down to the lip parting line."
+        },
+        "mouthHalfWidthSor": {
+          "type": "number",
+          "minimum": 0.5,
+          "description": "Half-width of the mouth corners."
+        },
+        "urnaRadiusYuka": {
+          "type": "number",
+          "minimum": 0.5,
+          "description": "Radius of the Urna (mdzod-spu) curl between the eyebrows in Yuka."
+        }
+      }
+    },
+    "tribhanga": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "headTiltDeg",
+        "neckDeflectionSor",
+        "heartDeflectionSor",
+        "waistDeflectionSor",
+        "hipDeflectionSor"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether the central Brahmasutra deflects into a Tribhanga (triple-bend) spline."
+        },
+        "headTiltDeg": {
+          "type": "number",
+          "minimum": -45,
+          "maximum": 45,
+          "description": "Angular inclination of the head/facial axis in degrees."
+        },
+        "neckDeflectionSor": {
+          "type": "number",
+          "minimum": -24,
+          "maximum": 24,
+          "description": "Horizontal sway at the neck (mgrin-pa) in Sor-mo."
+        },
+        "heartDeflectionSor": {
+          "type": "number",
+          "minimum": -24,
+          "maximum": 24,
+          "description": "Horizontal sway at the heart chakra (thugs-ka) in Sor-mo."
+        },
+        "waistDeflectionSor": {
+          "type": "number",
+          "minimum": -24,
+          "maximum": 24,
+          "description": "Horizontal sway at the navel/waist (lte-ba) in Sor-mo."
+        },
+        "hipDeflectionSor": {
+          "type": "number",
+          "minimum": -24,
+          "maximum": 24,
+          "description": "Horizontal counter-sway at the pelvis/seat plane in Sor-mo."
+        }
+      }
+    },
+    "halos": {
+      "type": "object",
+      "required": ["sirascakra", "prabhamandala"],
+      "additionalProperties": false,
+      "properties": {
+        "sirascakra": {
+          "type": "object",
+          "description": "Head nimbus / halo (Tib. dbu-kor, Skt. sirascakra).",
+          "required": ["centerAnchor", "verticalOffsetSor", "radiusSor", "innerRingRatio", "rayCount"],
+          "additionalProperties": false,
+          "properties": {
+            "centerAnchor": { "type": "string" },
+            "verticalOffsetSor": { "type": "number" },
+            "radiusSor": { "type": "number", "minimum": 4 },
+            "innerRingRatio": { "type": "number", "minimum": 0.5, "maximum": 0.99 },
+            "rayCount": { "type": "integer", "minimum": 4, "maximum": 128 }
+          }
+        },
+        "prabhamandala": {
+          "type": "object",
+          "description": "Full-body aureole / mandorla (Tib. 'od-kor, Skt. prabhamandala).",
+          "required": ["centerAnchor", "verticalOffsetSor", "radiusXSor", "radiusYSor", "innerRingRatio", "rayCount"],
+          "additionalProperties": false,
+          "properties": {
+            "centerAnchor": { "type": "string" },
+            "verticalOffsetSor": { "type": "number" },
+            "radiusXSor": { "type": "number", "minimum": 8 },
+            "radiusYSor": { "type": "number", "minimum": 8 },
+            "innerRingRatio": { "type": "number", "minimum": 0.5, "maximum": 0.99 },
+            "rayCount": { "type": "integer", "minimum": 8, "maximum": 256 }
+          }
+        }
+      }
+    },
+    "karnasutra": {
+      "type": "array",
+      "minItems": 2,
+      "description": "Diagonal symmetry & construction lines (Tib. zur-thig, Skt. karnasutra) intersecting key anatomical anchors.",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "fromAnchor", "fromOffsetSor", "toAnchor", "toOffsetSor"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "fromAnchor": { "type": "string" },
+          "fromOffsetSor": {
+            "type": "number",
+            "description": "Signed horizontal offset in Sor-mo from the anchor point (mirrored automatically to produce bilateral X-diagonals)."
+          },
+          "toAnchor": { "type": "string" },
+          "toOffsetSor": {
+            "type": "number",
+            "description": "Signed horizontal offset in Sor-mo at the target anchor."
+          }
+        }
+      }
+    },
+    "lotusThrone": {
+      "type": "object",
+      "required": [
+        "topAnchor",
+        "baseAnchor",
+        "topHalfWidthSor",
+        "baseHalfWidthSor",
+        "moonDiscHeightSor",
+        "upperPetalCount",
+        "lowerPetalCount"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "topAnchor": { "type": "string" },
+        "baseAnchor": { "type": "string" },
+        "topHalfWidthSor": { "type": "number", "minimum": 4 },
+        "baseHalfWidthSor": { "type": "number", "minimum": 4 },
+        "moonDiscHeightSor": { "type": "number", "minimum": 0 },
+        "upperPetalCount": { "type": "integer", "minimum": 3, "maximum": 64 },
+        "lowerPetalCount": { "type": "integer", "minimum": 3, "maximum": 64 }
+      }
+    }
+  }
+}
