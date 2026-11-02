@@ -165,6 +165,7 @@ export interface Point2D {
 
 export interface SolvedAnchor {
   id: string;
+  sSor: number;
   ySor: number;
   spinePoint: Point2D;
   tangentAngleRad: number;
@@ -273,6 +274,7 @@ export interface SolvedGrid {
   deity: DeityDefinition;
   pixelsPerSor: number;
   totalHeightSor: number;
+  totalVerticalSpanSor: number;
   totalHeightYuka: number;
   totalHeightTala: number;
   anchors: Record<string, SolvedAnchor>;

@@ -1,4 +1,9 @@
 import {
+  ArcLengthSpineSpline,
+  buildArcLengthSpineSpline,
+  SpineKnotSpec,
+} from './arc-length.js';
+import {
   AnatomicalZone,
   BoundingBox,
   DeityDefinition,
@@ -16,136 +21,84 @@ import { formatSorYuka, sorAndYukaToSor, sorToTala, sorToYuka, yukaToSor } from 
 const DEFAULT_PIXELS_PER_SOR = 12;
 
 /**
- * Evaluates a cubic Hermite spline interval t in [0, 1] with values (x0, x1) and tangents (m0, m1).
- */
-function evalHermite(
-  t: number,
-  x0: number,
-  x1: number,
-  m0: number,
-  m1: number,
-  dy: number
-): { x: number; dxdy: number } {
-  const t2 = t * t;
-  const t3 = t2 * t;
-
-  const h00 = 2 * t3 - 3 * t2 + 1;
-  const h10 = t3 - 2 * t2 + t;
-  const h01 = -2 * t3 + 3 * t2;
-  const h11 = t3 - t2;
-
-  const x = h00 * x0 + h10 * dy * m0 + h01 * x1 + h11 * dy * m1;
-
-  // Analytic derivative dh/dt divided by dy
-  const dh00 = 6 * t2 - 6 * t;
-  const dh10 = 3 * t2 - 4 * t + 1;
-  const dh01 = -6 * t2 + 6 * t;
-  const dh11 = 3 * t2 - 2 * t;
-
-  const dxdt = dh00 * x0 + dh10 * dy * m0 + dh01 * x1 + dh11 * dy * m1;
-  const dxdy = dy > 1e-6 ? dxdt / dy : 0;
-
-  return { x, dxdy };
-}
-
-/**
- * Builds the continuous Tribhanga (triple-bend) spinal evaluator x(ySor) and dx/dy(ySor)
+ * Builds the continuous arc-length parameterized Tribhanga (triple-bend) spinal spline
  * across the canonical anatomical knots along the Brahmasutra.
+ *
+ * Uses 5-point Gauss-Legendre numerical arc-length integration and Newton-Raphson inversion
+ * t(s) so that spinal segments (e.g. 12 Sor-mo thorax, 12 Sor-mo abdomen) preserve exact
+ * Euclidean curve length under lateral sway while foreshortening vertical span dy < ds.
  */
-function createTribhangaEvaluator(
-  anchorYMap: Record<string, number>,
+function createTribhangaSpline(
+  anchorSMap: Record<string, number>,
   tribhanga: TribhangaConfig
-): (ySor: number) => { xSor: number; tangentAngleRad: number; normalVector: Point2D } {
-  if (!tribhanga.enabled) {
-    return () => ({
-      xSor: 0,
-      tangentAngleRad: 0,
-      normalVector: { x: 1, y: 0 },
-    });
-  }
+): ArcLengthSpineSpline {
+  const sCrown = anchorSMap['crown_top'] ?? 0;
+  const sChin = anchorSMap['chin'] ?? 18;
+  const sNeck = anchorSMap['neck_base'] ?? 22;
+  const sHeart = anchorSMap['heart'] ?? 34;
+  const sNavel = anchorSMap['navel'] ?? 46;
+  const sSeat = anchorSMap['throne_top'] ?? 58;
+  const sBase = anchorSMap['throne_base'] ?? 70;
 
-  const yCrown = anchorYMap['crown_top'] ?? 0;
-  const yChin = anchorYMap['chin'] ?? 18;
-  const yNeck = anchorYMap['neck_base'] ?? 22;
-  const yHeart = anchorYMap['heart'] ?? 34;
-  const yNavel = anchorYMap['navel'] ?? 46;
-  const ySeat = anchorYMap['throne_top'] ?? 58;
-  const yBase = anchorYMap['throne_base'] ?? 70;
+  if (!tribhanga.enabled) {
+    return buildArcLengthSpineSpline(
+      [
+        { sSor: sCrown, xSor: 0 },
+        { sSor: sChin, xSor: 0 },
+        { sSor: sNeck, xSor: 0 },
+        { sSor: sHeart, xSor: 0 },
+        { sSor: sNavel, xSor: 0 },
+        { sSor: sSeat, xSor: 0 },
+        { sSor: sBase, xSor: 0 },
+      ],
+      false
+    );
+  }
 
   const headTiltRad = (tribhanga.headTiltDeg * Math.PI) / 180;
   const headSlope = Math.tan(headTiltRad);
 
   // At neck_base, the lateral offset is neckDeflectionSor.
-  // The chin and crown follow the head tilt angle upward from neck_base.
+  // The chin and crown follow the head tilt angle upward along canonical arc-length spans.
   const xNeck = tribhanga.neckDeflectionSor;
-  const xChin = xNeck - (yNeck - yChin) * Math.sin(headTiltRad);
-  const xCrown = xChin - (yChin - yCrown) * Math.sin(headTiltRad);
+  const xChin = xNeck - (sNeck - sChin) * Math.sin(headTiltRad);
+  const xCrown = xChin - (sChin - sCrown) * Math.sin(headTiltRad);
 
-  const knots: Array<{ y: number; x: number }> = [
-    { y: yCrown, x: xCrown },
-    { y: yChin, x: xChin },
-    { y: yNeck, x: xNeck },
-    { y: yHeart, x: tribhanga.heartDeflectionSor },
-    { y: yNavel, x: tribhanga.waistDeflectionSor },
-    { y: ySeat, x: tribhanga.hipDeflectionSor },
-    { y: yBase, x: 0 },
+  const knots: SpineKnotSpec[] = [
+    { sSor: sCrown, xSor: xCrown, slopeDxDy: -headSlope },
+    { sSor: sChin, xSor: xChin, slopeDxDy: -headSlope },
+    { sSor: sNeck, xSor: xNeck },
+    { sSor: sHeart, xSor: tribhanga.heartDeflectionSor },
+    { sSor: sNavel, xSor: tribhanga.waistDeflectionSor },
+    { sSor: sSeat, xSor: tribhanga.hipDeflectionSor },
+    { sSor: sBase, xSor: 0, slopeDxDy: 0 },
   ];
 
-  // Compute Catmull-Rom / finite-difference tangents at each knot
-  const tangents: number[] = knots.map((k, i) => {
-    if (i <= 1) {
-      return -headSlope;
-    }
-    if (i === knots.length - 1) {
-      return 0;
-    }
-    const prev = knots[i - 1];
-    const next = knots[i + 1];
-    const dy = next.y - prev.y;
-    return dy > 1e-6 ? (next.x - prev.x) / dy : 0;
-  });
+  return buildArcLengthSpineSpline(knots, true);
+}
 
-  return (ySor: number) => {
-    if (ySor <= knots[0].y) {
-      const angle = Math.atan(tangents[0]);
-      return {
-        xSor: knots[0].x,
-        tangentAngleRad: angle,
-        normalVector: { x: Math.cos(angle), y: -Math.sin(angle) },
-      };
-    }
+/**
+ * Measures the exact Euclidean arc length (in Sor-mo) along the solved Brahmasūtra /
+ * Tribhaṅga spine between two named anatomical anchors.
+ */
+export function measureSpineArcLength(
+  grid: SolvedGrid,
+  fromAnchorId: string,
+  toAnchorId: string
+): number {
+  const fromA = grid.anchors[fromAnchorId];
+  const toA = grid.anchors[toAnchorId];
+  if (!fromA || !toA) {
+    return 0;
+  }
 
-    if (ySor >= knots[knots.length - 1].y) {
-      return {
-        xSor: 0,
-        tangentAngleRad: 0,
-        normalVector: { x: 1, y: 0 },
-      };
-    }
+  const anchorSMap: Record<string, number> = {};
+  for (const [id, anc] of Object.entries(grid.anchors)) {
+    anchorSMap[id] = anc.sSor;
+  }
 
-    // Locate segment
-    let segIdx = 0;
-    for (let i = 0; i < knots.length - 1; i++) {
-      if (ySor >= knots[i].y && ySor <= knots[i + 1].y) {
-        segIdx = i;
-        break;
-      }
-    }
-
-    const k0 = knots[segIdx];
-    const k1 = knots[segIdx + 1];
-    const dy = k1.y - k0.y;
-    const t = dy > 1e-6 ? (ySor - k0.y) / dy : 0;
-
-    const { x, dxdy } = evalHermite(t, k0.x, k1.x, tangents[segIdx], tangents[segIdx + 1], dy);
-    const angle = Math.atan(dxdy);
-
-    return {
-      xSor: x,
-      tangentAngleRad: angle,
-      normalVector: { x: Math.cos(angle), y: -Math.sin(angle) },
-    };
-  };
+  const spline = createTribhangaSpline(anchorSMap, grid.deity.tribhanga);
+  return spline.measureArcLength(fromA.sSor, toA.sSor);
 }
 
 /**
@@ -187,35 +140,37 @@ export function solveDeityGrid(
     ...(overrides.tribhanga ?? {}),
   };
 
-  // 1. Solve vertical anchor positions (in Sor-mo from crown_top = 0 downward)
-  const anchorYMap: Record<string, number> = {};
+  // 1. Solve canonical arc-length anchor positions (in Sor-mo from crown_top = 0 downward)
+  const anchorSMap: Record<string, number> = {};
   const anchorZoneMap: Record<string, AnatomicalZone> = {};
 
-  let currentYSor = 0;
+  let currentSSor = 0;
   definition.verticalSegments.forEach((seg, idx) => {
     if (idx === 0) {
-      anchorYMap[seg.topAnchor] = 0;
+      anchorSMap[seg.topAnchor] = 0;
       anchorZoneMap[seg.topAnchor] = seg.zone;
     }
     const deltaSor = sorAndYukaToSor(seg.sor, seg.yuka);
-    currentYSor += deltaSor;
-    anchorYMap[seg.bottomAnchor] = currentYSor;
+    currentSSor += deltaSor;
+    anchorSMap[seg.bottomAnchor] = currentSSor;
     anchorZoneMap[seg.bottomAnchor] = seg.zone;
   });
 
-  const totalHeightSor = currentYSor;
+  const totalHeightSor = currentSSor;
   const totalHeightYuka = sorToYuka(totalHeightSor);
   const totalHeightTala = sorToTala(totalHeightSor);
 
-  // 2. Build continuous Tribhanga spine evaluator
-  const evaluateSpine = createTribhangaEvaluator(anchorYMap, tribhanga);
+  // 2. Build continuous Gauss-Legendre arc-length parameterized Tribhanga spine
+  const spineSpline = createTribhangaSpline(anchorSMap, tribhanga);
+  const evaluateSpine = spineSpline.evaluateAtArcLength;
 
   // 3. Populate SolvedAnchors
   const anchors: Record<string, SolvedAnchor> = {};
-  for (const [id, ySor] of Object.entries(anchorYMap)) {
-    const { xSor, tangentAngleRad, normalVector } = evaluateSpine(ySor);
+  for (const [id, sSor] of Object.entries(anchorSMap)) {
+    const { xSor, ySor, tangentAngleRad, normalVector } = evaluateSpine(sSor);
     anchors[id] = {
       id,
+      sSor,
       ySor,
       spinePoint: { x: xSor * pixelsPerSor, y: ySor * pixelsPerSor },
       tangentAngleRad,
@@ -227,12 +182,12 @@ export function solveDeityGrid(
   const primitives: GeometricPrimitive[] = [];
   const measurements: SolvedMeasurementLabel[] = [];
 
-  // 4. Sample the central Brahmasutra axis (vertical plumb line + deflected Tribhanga curve)
+  // 4. Sample the central Brahmasutra axis at equidistant arc-length intervals
   const spineSamples: Point2D[] = [];
-  const sampleCount = 70;
+  const sampleCount = 140;
   for (let i = 0; i <= sampleCount; i++) {
-    const ySor = (totalHeightSor * i) / sampleCount;
-    const { xSor } = evaluateSpine(ySor);
+    const sSor = (totalHeightSor * i) / sampleCount;
+    const { xSor, ySor } = evaluateSpine(sSor);
     spineSamples.push({ x: xSor * pixelsPerSor, y: ySor * pixelsPerSor });
   }
 
@@ -342,9 +297,9 @@ export function solveDeityGrid(
     const botA = anchors[seg.bottomAnchor];
     if (!topA || !botA) continue;
     const segSor = sorAndYukaToSor(seg.sor, seg.yuka);
-    const midYSor = (topA.ySor + botA.ySor) / 2;
-    const { xSor, normalVector } = evaluateSpine(midYSor);
-    const midPoint = { x: xSor * pixelsPerSor, y: midYSor * pixelsPerSor };
+    const midSSor = (topA.sSor + botA.sSor) / 2;
+    const { xSor, ySor, normalVector } = evaluateSpine(midSSor);
+    const midPoint = { x: xSor * pixelsPerSor, y: ySor * pixelsPerSor };
 
     measurements.push({
       id: `measure_${seg.id}`,
@@ -510,12 +465,12 @@ export function solveDeityGrid(
       radius: urnaRadiusSor * pixelsPerSor,
     });
 
-    // Eye Horizontal Axis (typically 2 Sor below Urna)
-    const eyeYSor = urnaA.ySor + fg.eyeLineBelowUrnaSor;
-    const eyeSpine = evaluateSpine(eyeYSor);
+    // Eye Horizontal Axis (typically 2 Sor arc-length below Urna)
+    const eyeSSor = urnaA.sSor + fg.eyeLineBelowUrnaSor;
+    const eyeSpine = evaluateSpine(eyeSSor);
     const eyeCenterPt: Point2D = {
       x: eyeSpine.xSor * pixelsPerSor,
-      y: eyeYSor * pixelsPerSor,
+      y: eyeSpine.ySor * pixelsPerSor,
     };
 
     primitives.push({
@@ -644,12 +599,12 @@ export function solveDeityGrid(
       }
     );
 
-    // Mouth & Lips (below nose_base)
-    const mouthYSor = noseBaseA.ySor + fg.mouthBelowNoseBaseSor;
-    const mouthSpine = evaluateSpine(mouthYSor);
+    // Mouth & Lips (below nose_base along canonical arc length)
+    const mouthSSor = noseBaseA.sSor + fg.mouthBelowNoseBaseSor;
+    const mouthSpine = evaluateSpine(mouthSSor);
     const mouthCenterPt: Point2D = {
       x: mouthSpine.xSor * pixelsPerSor,
-      y: mouthYSor * pixelsPerSor,
+      y: mouthSpine.ySor * pixelsPerSor,
     };
     const mouthLeft = projectFromSpine(
       mouthCenterPt,
@@ -1175,6 +1130,7 @@ export function solveDeityGrid(
     },
     pixelsPerSor,
     totalHeightSor,
+    totalVerticalSpanSor: spineSpline.totalVerticalSpanSor,
     totalHeightYuka,
     totalHeightTala,
     anchors,

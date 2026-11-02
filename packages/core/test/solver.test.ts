@@ -11,6 +11,7 @@ import {
   gaussLegendre5Integrate,
   GREEN_TARA_PRESET,
   invertHermiteArcLength,
+  measureSpineArcLength,
   renderGridToSvg,
   SHAKYAMUNI_SEATED_PRESET,
   solveDeityGrid,
@@ -168,6 +169,45 @@ describe('@thangkagrid/core iconometric solver', () => {
 
     // Facial axis has a non-zero tangent angle due to headTiltDeg
     expect(Math.abs(solved.anchors['urna'].tangentAngleRad)).toBeGreaterThan(0.05);
+
+    // Canonical arc-length coordinates sSor remain exact while vertical ySor foreshortens
+    expect(solved.anchors['neck_base'].sSor).toBe(22);
+    expect(solved.anchors['heart'].sSor).toBe(34);
+    expect(solved.anchors['navel'].sSor).toBe(46);
+    expect(solved.totalVerticalSpanSor).toBeLessThan(solved.totalHeightSor);
+  });
+
+  it('preserves invariant 12.000 ± 0.001 sor thoracic & abdominal arc lengths under extreme sway [-10, +10]', () => {
+    for (const heartDeflectionSor of [-10, -7.5, -5, -2.5, 0, 2.5, 5, 7.5, 10]) {
+      const solved = solveDeityGrid(GREEN_TARA_PRESET, {
+        pixelsPerSor: 10,
+        tribhanga: {
+          enabled: true,
+          heartDeflectionSor,
+        },
+      });
+
+      const thoraxArcSor = measureSpineArcLength(solved, 'neck_base', 'heart');
+      const abdomenArcSor = measureSpineArcLength(solved, 'heart', 'navel');
+      const pelvisArcSor = measureSpineArcLength(solved, 'navel', 'throne_top');
+
+      expect(Math.abs(thoraxArcSor - 12.0)).toBeLessThan(0.001);
+      expect(Math.abs(abdomenArcSor - 12.0)).toBeLessThan(0.001);
+      expect(Math.abs(pelvisArcSor - 12.0)).toBeLessThan(0.001);
+
+      // Verify vertical foreshortening (dy < 12 sor) whenever lateral sway is non-zero
+      const thoraxDySor = solved.anchors['heart'].ySor - solved.anchors['neck_base'].ySor;
+      const abdomenDySor = solved.anchors['navel'].ySor - solved.anchors['heart'].ySor;
+      expect(thoraxDySor).toBeLessThan(12.0);
+      expect(abdomenDySor).toBeLessThan(12.0);
+    }
+
+    // Wrathful Vajrapani (96 Sor-mo class: 10-sor thorax, 10-sor abdomen, 14-sor lunge)
+    const wrathful = solveDeityGrid(VAJRAPANI_WRATHFUL_PRESET, { pixelsPerSor: 10 });
+    expect(measureSpineArcLength(wrathful, 'neck_base', 'heart')).toBeCloseTo(10.0, 5);
+    expect(measureSpineArcLength(wrathful, 'heart', 'navel')).toBeCloseTo(10.0, 5);
+    expect(measureSpineArcLength(wrathful, 'navel', 'throne_top')).toBeCloseTo(14.0, 5);
+    expect(wrathful.totalVerticalSpanSor).toBeLessThan(wrathful.totalHeightSor);
   });
 
   it('renders layered SVG wireframe and exports AxiDraw-compatible DXF', () => {
