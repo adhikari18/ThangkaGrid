@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  buildArcLengthSpineSpline,
   computeHermiteArcLength,
   decomposeSor,
   evalCubicHermiteSegment,
@@ -9,9 +10,11 @@ import {
   GAUSS_LEGENDRE_5_WEIGHTS,
   gaussLegendre5Integrate,
   GREEN_TARA_PRESET,
+  invertHermiteArcLength,
   renderGridToSvg,
   SHAKYAMUNI_SEATED_PRESET,
   solveDeityGrid,
+  solveSegmentVerticalSpan,
   sorAndYukaToSor,
   sorToTala,
   sorToYuka,
@@ -53,6 +56,42 @@ describe('@thangkagrid/core 5-point Gauss-Legendre quadrature & Hermite arc-leng
     const midEval = evalCubicHermiteSegment(0.5, -3.5, 1.25, 0, 0, 12);
     expect(midEval.x).toBeCloseTo((-3.5 + 1.25) / 2, 10);
     expect(midEval.yDelta).toBeCloseTo(6.0, 10);
+  });
+
+  it('inverts arc length t(s) via Newton-Raphson and solves foreshortened vertical spans dy', () => {
+    const x0 = -3.5;
+    const x1 = 1.25;
+    const m0 = -0.15;
+    const m1 = 0.25;
+    const targetLen = 12.0;
+
+    // Solve foreshortened vertical span dy < 12 so total arc length is 12.000 sor
+    const dy = solveSegmentVerticalSpan(targetLen, x0, x1, m0, m1);
+    expect(dy).toBeLessThan(targetLen);
+    expect(dy).toBeGreaterThan(9.5);
+    expect(computeHermiteArcLength(1.0, x0, x1, m0, m1, dy)).toBeCloseTo(targetLen, 8);
+
+    // Round-trip s(t(s)) === s across intermediate arc-length samples
+    for (const sSample of [0, 1.5, 3.0, 6.0, 9.25, 11.5, 12.0]) {
+      const t = invertHermiteArcLength(sSample, x0, x1, m0, m1, dy, targetLen);
+      const recoveredS = computeHermiteArcLength(t, x0, x1, m0, m1, dy);
+      expect(recoveredS).toBeCloseTo(sSample, 8);
+    }
+
+    // Piecewise spine spline preserves sub-interval arc lengths
+    const spline = buildArcLengthSpineSpline([
+      { sSor: 0, xSor: 0 },
+      { sSor: 22, xSor: -2.0 },
+      { sSor: 34, xSor: -6.5 },
+      { sSor: 46, xSor: 2.5 },
+      { sSor: 58, xSor: 4.5 },
+      { sSor: 70, xSor: 0 },
+    ]);
+
+    expect(spline.measureArcLength(22, 34)).toBeCloseTo(12.0, 6);
+    expect(spline.measureArcLength(34, 46)).toBeCloseTo(12.0, 6);
+    expect(spline.measureArcLength(22, 46)).toBeCloseTo(24.0, 6);
+    expect(spline.totalVerticalSpanSor).toBeLessThan(70.0);
   });
 });
 
