@@ -52,3 +52,4 @@ Check out our seeded issue templates in [`.github/ISSUE_TEMPLATE/`](./.github/IS
 ## License
 
 By contributing to `ThangkaGrid`, you agree that your contributions will be licensed under the [MIT License](./LICENSE).
+

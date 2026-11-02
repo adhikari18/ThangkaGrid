@@ -188,3 +188,4 @@ export function validateDeityDefinition(def: unknown): ValidationResult {
   const hasErrors = issues.some((i) => i.severity === 'error');
   return { valid: !hasErrors, issues };
 }
+

@@ -28,3 +28,4 @@ To make **ThangkaGrid** a rigorous research tool for art historians and conserva
 
 - [ ] Clicking two reference points on an uploaded image snaps the overlay to the solved `urna` and `chin`/`navel` anchors automatically.
 - [ ] Computed scale, offset, and rotation values sync back to the calibration sliders.
+

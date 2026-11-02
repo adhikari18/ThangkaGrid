@@ -260,3 +260,4 @@ export function renderGridToSvg(
   lines.push(`</svg>`);
   return lines.join('\n');
 }
+

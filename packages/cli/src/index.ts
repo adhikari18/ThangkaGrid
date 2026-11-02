@@ -185,3 +185,4 @@ export function runCli(argv: string[]): number {
 if (import.meta.url === `file://${process.argv[1]}`) {
   process.exitCode = runCli(process.argv);
 }
+

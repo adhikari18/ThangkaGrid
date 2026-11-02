@@ -32,3 +32,4 @@ Create a new canonical preset file at `presets/avalokiteshvara_four_armed.json` 
 
 - [ ] `presets/avalokiteshvara_four_armed.json` passes `validateDeityDefinition` with zero errors or warnings.
 - [ ] `npx thangkagrid render presets/avalokiteshvara_four_armed.json --format svg` outputs a clean wireframe.
+

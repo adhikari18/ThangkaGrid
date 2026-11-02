@@ -970,3 +970,4 @@ export function listCanonicalPresets(): DeityDefinition[] {
 export function getCanonicalPreset(id: string): DeityDefinition | undefined {
   return CANONICAL_PRESETS[id];
 }
+

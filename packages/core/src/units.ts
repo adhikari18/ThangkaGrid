@@ -97,3 +97,4 @@ export function sorToMillimeters(
   if (seatedGridHeightSor <= 0) return 0;
   return (sor / seatedGridHeightSor) * targetCanvasHeightMm;
 }
+

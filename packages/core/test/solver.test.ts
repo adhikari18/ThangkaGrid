@@ -109,3 +109,4 @@ describe('@thangkagrid/core iconometric solver', () => {
     expect(dxf).toContain('EOF');
   });
 });
+

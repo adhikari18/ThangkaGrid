@@ -75,3 +75,4 @@ This document outlines the multi-milestone engineering roadmap for `ThangkaGrid`
   - Package a zero-dependency Custom Element for embedding interactive *Thigse* wireframes in digital humanities papers, museum catalogs, and documentation sites.
 - [ ] **6.3 Visual Regression & Golden SVG/DXF Snapshot Test Suite (~4 hrs):**
   - Add automated geometric invariant and golden vector snapshot tests across all canonical deity presets.
+

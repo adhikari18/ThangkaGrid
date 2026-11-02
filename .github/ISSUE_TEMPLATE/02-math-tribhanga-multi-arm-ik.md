@@ -26,3 +26,4 @@ In traditional *Thigse* manuals, the `12 Sor-mo` thoracic and abdominal interval
 
 - [ ] Arc length between `neck_base` -> `heart` -> `navel` remains invariant at `12.000 ± 0.001 sor` regardless of `heartDeflectionSor` within $[-10, +10]\text{ sor}$.
 - [ ] Unit tests verifying arc-length invariance and vertical foreshortening in `packages/core/test/solver.test.ts`.
+

@@ -26,3 +26,4 @@ Currently, every `VerticalSegment` and `HorizontalWidth` in `schemas/deity-defin
 
 - [ ] `docs/ICONOMETRY_GLOSSARY.md` includes Unicode Tibetan script, Extended Wylie, IAST Sanskrit, and Newari terms with treatise citations.
 - [ ] Schema and TypeScript types remain backward-compatible with existing `v1.0.0` presets.
+
