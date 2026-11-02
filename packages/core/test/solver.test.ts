@@ -1,8 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import {
+  computeHermiteArcLength,
   decomposeSor,
+  evalCubicHermiteSegment,
   exportGridToDxf,
   formatSorYuka,
+  GAUSS_LEGENDRE_5_NODES,
+  GAUSS_LEGENDRE_5_WEIGHTS,
+  gaussLegendre5Integrate,
   GREEN_TARA_PRESET,
   renderGridToSvg,
   SHAKYAMUNI_SEATED_PRESET,
@@ -13,6 +18,43 @@ import {
   VAJRAPANI_WRATHFUL_PRESET,
   validateDeityDefinition,
 } from '../src/index.js';
+
+describe('@thangkagrid/core 5-point Gauss-Legendre quadrature & Hermite arc-length', () => {
+  it('integrates polynomials up to degree 9 exactly on arbitrary intervals', () => {
+    // Sum of weights on [-1, 1] is 2.0, nodes are symmetric around 0
+    const weightSum = GAUSS_LEGENDRE_5_WEIGHTS.reduce((acc, w) => acc + w, 0);
+    expect(weightSum).toBeCloseTo(2.0, 12);
+    expect(GAUSS_LEGENDRE_5_NODES[2]).toBe(0);
+    expect(GAUSS_LEGENDRE_5_NODES[0]).toBeCloseTo(-GAUSS_LEGENDRE_5_NODES[4], 12);
+
+    // Integrate f(t) = 10 * t^9 - 6 * t^5 + 3 * t^2 over [0, 2]
+    // Antiderivative: t^10 - t^6 + t^3 -> at t=2: 1024 - 64 + 8 = 968
+    const polyIntegral = gaussLegendre5Integrate(
+      (t) => 10 * Math.pow(t, 9) - 6 * Math.pow(t, 5) + 3 * t * t,
+      0,
+      2
+    );
+    expect(polyIntegral).toBeCloseTo(968, 9);
+  });
+
+  it('computes exact Euclidean arc length for straight and deflected cubic Hermite segments', () => {
+    // 1. Vertical plumb segment (x0 = 0, x1 = 0, m0 = 0, m1 = 0, dy = 12) -> arc length = 12
+    expect(computeHermiteArcLength(1.0, 0, 0, 0, 0, 12)).toBeCloseTo(12.0, 10);
+    expect(computeHermiteArcLength(0.5, 0, 0, 0, 0, 12)).toBeCloseTo(6.0, 10);
+
+    // 2. Straight inclined line of horizontal span 5 and vertical span 12 (slope m = 5/12) -> hypotenuse = 13
+    const slope = 5 / 12;
+    expect(computeHermiteArcLength(1.0, 0, 5, slope, slope, 12)).toBeCloseTo(13.0, 10);
+
+    // 3. Deflected S-curve has arc length strictly exceeding vertical span dy
+    const curvedLength = computeHermiteArcLength(1.0, -3.5, 1.25, -0.2, 0.25, 12);
+    expect(curvedLength).toBeGreaterThan(12.8);
+
+    const midEval = evalCubicHermiteSegment(0.5, -3.5, 1.25, 0, 0, 12);
+    expect(midEval.x).toBeCloseTo((-3.5 + 1.25) / 2, 10);
+    expect(midEval.yDelta).toBeCloseTo(6.0, 10);
+  });
+});
 
 describe('@thangkagrid/core unit system (Sor-mo, Yuka, Tāla)', () => {
   it('converts between Sor-mo, Yuka (barley-grains), and Tāla (face-spans)', () => {
